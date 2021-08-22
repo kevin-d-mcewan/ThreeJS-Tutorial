@@ -49,6 +49,9 @@
             // this saves processing power and batter life
             function animate() {
                 requestAnimationFrame( animate );
+                //Animating the cube
+                cube.rotation.x += 0.01;
+                cube.rotation.y += 0.01;
                 renderer.render( scene, camera );
             }
             animate();
