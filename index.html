@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>My first three.js app</title>
+        <style>
+            body { margin: 0; }
+        </style>
+    </head>
+    <body>
+        <script src="js/three.js"></script>
+        <script>
+            // Our Javascript will go here
+            // This is setting up our scene
+            const scene = new THREE.Scene();
+            // This is setting up our camera. There are different types of cameras we chose PerspectiveCamera
+            // The attributes in the Camera are as follows (Field of View/FOV {75}, Aspect Ratio {window.innerWidth
+            // / window.innerHeight}, Near Clipping Plane {0.1}, Far Clipping Plane {1000})
+            const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+            // This is setting up the renderer(Where the awesomeness happens)
+            const renderer = new THREE.WebGLRenderer();
+            // setSize usually want to do 'width' & 'height' of our area i.e. browser window. For intesnsive apps
+            // we want to do smaller i.e. 'window.innerWidth/2' & 'window.innerHeight/2' makes app render 1/4 size
+            // can set 3rd argument to 'false' for updateStyle to get size but lower resolution
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            // This adds renderer to element in HTML Doc. In this example is a <canvas> element the renderer uses
+            document.body.appendChild( renderer.domElement );
+
+            // Add a Cube to the scene
+            // To create cube need 'BoxGeometry'. Object contains all the points[vertices] & fill[faces] of the cube.
+            const geometry = new THREE.BoxGeometry();
+            // This is a material to add color to it. There are many materials. All materials take an object of properties
+            // which will be applied to them. For example will only be adding a green color.This works like css colors (hex colors)
+            const material = new THREE.MeshBasicMaterial( { color: 0x00ff00} );
+            // 3rd added is 'Mesh'. MESH is an object that takes 'geometry' and adds a 'material' to it. We can add this to
+            // the scene and move around freely
+            const cube = new THREE.Mesh( geometry, material );
+            // By default call 'scene.add()' which adds thing to coordinates (0, 0, 0). This would cause camera and object
+            // to be on top of each other. To avoid this move camera out a bit
+            scene.add( cube );
+
+            // Moving camera out a bit to not be on top of cube
+            camera.position.z = 5;
+
+            // Next we need to RENDER THE SCENE. To do this we need whats called 'render' or 'animate loop'
+            // This creates a loop that causes 'renderer' to draw scene every time screen refreshes (typically 60 times per second (60 fps))
+            // We use 'requestAnimationFrame' over 'setInterval' bc it has a # of advantages i.e. pausing when user switches tab
+            // this saves processing power and batter life
+            function animate() {
+                requestAnimationFrame( animate );
+                renderer.render( scene, camera );
+            }
+            animate();
+        </script>
+    </body>
+</html>
